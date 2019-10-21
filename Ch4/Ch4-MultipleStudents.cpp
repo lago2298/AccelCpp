@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include <stdexcept> // needed for exceptions
+#include <algorithm>
 
 using namespace std;
 
@@ -23,6 +24,12 @@ struct student_info {
     double midterm, final;
     vector<double> homework;
 };
+
+// Function to pass into the sort function to compare elements based on student name alphabetical order
+bool compare (const student_info& x, const student_info& y)
+{
+    return x.name < y.name;
+}
 
 // Function to calculate the median homework grade, returns the median
 // Do not want to change homework grades vector during the sort, so copy in homeowork grade values
@@ -122,14 +129,14 @@ int main()
         }
     }
     
-    // TODO: Sort Student Info objects in vector alphabetically by name
-    
+    // Sort Student Info objects in vector alphabetically by name
+    sort(student_vector.begin(), student_vector.end(), compare);
     
     // Print final grades for each student
     for (vec_stu_info_size index = 0; index < student_vector.size(); index++)
     {
         
-        cout << "The final grade for " << student_vector[index].name << " is: ";
+        cout << student_vector[index].name << string(maxlength_name + 1 - student_vector[index].name.size(), ' ');
         
         try {
             double finalgrade = grade(student_vector[index]); // Rule of thumb: only one side effect (exception) per line of code
